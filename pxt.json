@@ -1,6 +1,6 @@
 {
     "name": "クイズ解答ボタン",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "",
     "dependencies": {
         "core": "*",
