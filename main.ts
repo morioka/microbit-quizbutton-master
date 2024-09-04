@@ -235,7 +235,7 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
                 serial.writeNumbers([受信した子機ID, 0])
             }
         }
-        if (解答待ち配列.length > 0) {
+        if (解答者ID == 0) {
             解答者ID = 解答待ち配列[0]
             子機への指示 = 指示_解答権通知
             機器へ指示を送信(解答者ID, 子機への指示)
