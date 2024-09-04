@@ -57,7 +57,7 @@ function 司会者_不正解通知 () {
             機器へ指示を送信(解答者ID, 子機への指示)
             serial.writeNumbers([解答者ID, 子機への指示])
             basic.showIcon(IconNames.No)
-            music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.InBackground)
+            音_ブブー()
         }
     }
 }
@@ -70,6 +70,11 @@ function 機器番号_表示 () {
     } else {
         basic.showNumber(機器番号)
     }
+}
+function 音_ブブー () {
+    music.play(music.tonePlayable(131, music.beat(BeatFraction.Half)), music.PlaybackMode.UntilDone)
+    basic.pause(100)
+    music.play(music.tonePlayable(131, music.beat(BeatFraction.Whole)), music.PlaybackMode.InBackground)
 }
 function 司会者_初期設定 () {
     if (動作モード.includes("司会者")) {
@@ -90,13 +95,13 @@ function 解答者_指示受付 (receivedNumber2: number) {
         if (受信した子機ID == 機器番号) {
             if (受信した指示 == 指示_解答権通知) {
                 basic.showIcon(IconNames.Heart)
-                music._playDefaultBackground(music.builtInPlayableMelody(Melodies.BaDing), music.PlaybackMode.UntilDone)
+                音_ピンポン()
             } else if (受信した指示 == 指示_正解通知) {
                 basic.showIcon(IconNames.Yes)
-                music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerUp), music.PlaybackMode.UntilDone)
+                音_ピンポン()
             } else if (受信した指示 == 指示_不正解通知) {
                 basic.showIcon(IconNames.No)
-                music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.UntilDone)
+                音_ブブー()
             } else {
                 // 未定義。テスト用
                 basic.showIcon(IconNames.Happy)
@@ -108,6 +113,10 @@ function 解答者_指示受付 (receivedNumber2: number) {
             basic.showNumber(機器番号)
         }
     }
+}
+function 音_ピンポン () {
+    music.play(music.tonePlayable(659, music.beat(BeatFraction.Half)), music.PlaybackMode.UntilDone)
+    music.play(music.tonePlayable(523, music.beat(BeatFraction.Whole)), music.PlaybackMode.InBackground)
 }
 function 解答者_解答ボタン押下 () {
     if (動作モード.includes("解答者")) {
@@ -159,9 +168,9 @@ function 司会者_次の解答者へ () {
                 機器へ指示を送信(解答者ID, 指示_解答権通知)
                 serial.writeNumbers([解答者ID, 指示_解答権通知])
                 basic.showNumber(解答者ID)
-                music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerUp), music.PlaybackMode.InBackground)
+                音_ピンポン()
             } else {
-                music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.InBackground)
+                音_ブブー()
             }
         }
     }
@@ -174,7 +183,7 @@ function 司会者_正解通知 () {
             機器へ指示を送信(解答者ID, 子機への指示)
             serial.writeNumbers([解答者ID, 子機への指示])
             basic.showIcon(IconNames.Yes)
-            music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerUp), music.PlaybackMode.InBackground)
+            音_ピンポン()
         }
     }
 }
@@ -241,7 +250,7 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
             機器へ指示を送信(解答者ID, 子機への指示)
             serial.writeNumbers([解答者ID, 子機への指示])
             basic.showNumber(解答者ID)
-            music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerUp), music.PlaybackMode.InBackground)
+            音_ピンポン()
         }
     }
 }
