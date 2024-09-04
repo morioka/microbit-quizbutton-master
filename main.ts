@@ -11,8 +11,7 @@ function 初期設定 () {
     }
 }
 function 司会者_解答者順を確認 () {
-    let 配列インデックス: number;
-if (動作モード.includes("司会者")) {
+    if (動作モード.includes("司会者")) {
         if (解答待ち配列.length > 0) {
             配列インデックス = 0
             while (配列インデックス <= 解答待ち配列.length - 1) {
@@ -249,6 +248,7 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
 let 受信した指示 = 0
 let 子機への指示 = 0
 let 解答者ID = 0
+let 配列インデックス = 0
 let 機器番号 = 0
 let 動作モード = ""
 let 指示_不正解通知 = 0
