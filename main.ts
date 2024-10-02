@@ -83,6 +83,7 @@ function 司会者_初期設定 () {
         子機への指示 = 0
         解答済配列 = []
         解答待ちINDEX = -1
+        解答者ID = 0
         機器番号_表示()
         serial.writeNumbers([0, 0])
     }
@@ -244,7 +245,7 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
                 serial.writeNumbers([受信した子機ID, 0])
             }
         }
-        if (解答者ID == -1) {
+        if (解答待ちINDEX == -1) {
             解答待ちINDEX += 1
             解答者ID = 解答待ち配列[解答待ちINDEX]
             子機への指示 = 指示_解答権通知
@@ -258,7 +259,6 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
 let 受信した指示 = 0
 let 解答済配列: number[] = []
 let 子機への指示 = 0
-let 解答者ID = 0
 let 配列インデックス = 0
 let 機器番号 = 0
 let 動作モード = ""
@@ -269,8 +269,10 @@ let 指示_解答ボタン押下通知 = 0
 let 指示_場のクリア = 0
 let 解答待ちINDEX = 0
 let 解答待ち配列: number[] = []
+let 解答者ID = 0
 let 受信した子機ID = 0
 受信した子機ID = 0
+解答者ID = 0
 解答待ち配列 = []
 解答待ちINDEX = -1
 指示_場のクリア = 0
