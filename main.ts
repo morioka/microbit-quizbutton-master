@@ -81,8 +81,8 @@ function 司会者_初期設定 () {
         解答者ID = 0
         受信した子機ID = 0
         子機への指示 = 0
-        解答待ち配列 = []
         解答済配列 = []
+        解答待ちINDEX = -1
         機器番号_表示()
         serial.writeNumbers([0, 0])
     }
@@ -161,17 +161,17 @@ function 司会者_初期状態へ () {
 function 司会者_次の解答者へ () {
     if (動作モード.includes("司会者")) {
         if (解答待ち配列.length > 0) {
-            解答済配列.push(解答待ち配列[0])
-            解答待ち配列.shift()
-            if (解答待ち配列.length > 0) {
-                解答者ID = 解答待ち配列[0]
-                機器へ指示を送信(解答者ID, 指示_解答権通知)
-                serial.writeNumbers([解答者ID, 指示_解答権通知])
-                basic.showNumber(解答者ID)
-                音_ピンポン()
-            } else {
-                音_ブブー()
-            }
+            解答待ちINDEX += 1
+        }
+        if (解答待ち配列.length > 解答待ちINDEX) {
+            解答者ID = 解答待ち配列[解答待ちINDEX]
+            機器へ指示を送信(解答者ID, 指示_解答権通知)
+            serial.writeNumbers([解答者ID, 指示_解答権通知])
+            basic.showNumber(解答者ID)
+            音_ピンポン()
+        } else {
+            解答待ちINDEX = 解答待ち配列.length - 1
+            音_ブブー()
         }
     }
 }
@@ -239,13 +239,14 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
         受信した子機ID = receivedNumber3 % 100
         // 解答者の応答順を保持しておく。重複なし
         if (受信した子機ID > 0) {
-            if (解答待ち配列.indexOf(受信した子機ID) == -1 && 解答済配列.indexOf(受信した子機ID) == -1) {
+            if (解答待ち配列.indexOf(受信した子機ID) == -1) {
                 解答待ち配列.push(受信した子機ID)
                 serial.writeNumbers([受信した子機ID, 0])
             }
         }
-        if (解答者ID == 0) {
-            解答者ID = 解答待ち配列[0]
+        if (解答者ID == -1) {
+            解答待ちINDEX += 1
+            解答者ID = 解答待ち配列[解答待ちINDEX]
             子機への指示 = 指示_解答権通知
             機器へ指示を送信(解答者ID, 子機への指示)
             serial.writeNumbers([解答者ID, 子機への指示])
@@ -255,6 +256,7 @@ function 司会者_解答ボタン受付 (receivedNumber3: number) {
     }
 }
 let 受信した指示 = 0
+let 解答済配列: number[] = []
 let 子機への指示 = 0
 let 解答者ID = 0
 let 配列インデックス = 0
@@ -265,12 +267,12 @@ let 指示_正解通知 = 0
 let 指示_解答権通知 = 0
 let 指示_解答ボタン押下通知 = 0
 let 指示_場のクリア = 0
+let 解答待ちINDEX = 0
 let 解答待ち配列: number[] = []
-let 解答済配列: number[] = []
 let 受信した子機ID = 0
 受信した子機ID = 0
-解答済配列 = []
 解答待ち配列 = []
+解答待ちINDEX = -1
 指示_場のクリア = 0
 指示_解答ボタン押下通知 = 0
 指示_解答権通知 = 1
